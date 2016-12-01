@@ -37,7 +37,7 @@ class PFG600Protocol(Protocol):
     def _read_response(self, transport):
         try:
             resp = list(transport.read_bytes(5))
-            self.logger.debug('Received message: %s', repr(resp))
+            self.logger.debug('Received message: %s', repr(map(hex, resp)))
             return resp
         except slave.transport.Timeout:
             raise CommunicationError('Timeout while receive response')

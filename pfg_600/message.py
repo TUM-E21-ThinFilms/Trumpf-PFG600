@@ -51,8 +51,8 @@ class Message(object):
         self.set_function(function)
 
     def set_data(self, data):
-        self.datal = data & 0x00FF
-        self.datah = data & 0xFF00
+        self.datal = (data & 0x00FF)
+        self.datah = (data & 0xFF00) >> 8
 
     def get_data(self):
         return self.datah << 8 | self.datal
@@ -89,6 +89,9 @@ class Message(object):
         msg.set_checksum(raw_data[4])
 
         return msg
+
+    def __str__(self):
+	return repr(map(hex, self.get_raw()))
 
 class SimpleMessage(Message):
     def __init__(self, functioncode, data=0):
