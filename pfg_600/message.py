@@ -47,7 +47,7 @@ class Message(object):
         return self.waiting_bit << 7 | self.function_code
 
     def set_full_function(self, function):
-        self.set_waitingbit(unction & 0x80)
+        self.set_waitingbit(function & 0x80)
         self.set_function(function)
 
     def set_data(self, data):
@@ -55,7 +55,7 @@ class Message(object):
         self.datah = data & 0xFF00
 
     def get_data(self):
-        return self.data
+        return self.datah << 8 || self.datal
 
     def compute_checksum(self):
         data = [self.address, self.get_full_function(), self.datah, self.datal]
