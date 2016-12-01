@@ -70,7 +70,7 @@ class PFG600Driver(object):
 
     def set_target_voltage(self, voltage):
         if voltage < 0 or voltage > 1000:
-            raise ValueError("voltage must be in range [0, 1000] Watt")
+            raise ValueError("voltage must be in range [0, 1000] voltage")
 
         self._write(SimpleMessage(self._target_voltage, voltage))
 
