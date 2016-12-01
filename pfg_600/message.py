@@ -55,7 +55,7 @@ class Message(object):
         self.datah = data & 0xFF00
 
     def get_data(self):
-        return self.datah << 8 || self.datal
+        return self.datah << 8 | self.datal
 
     def compute_checksum(self):
         data = [self.address, self.get_full_function(), self.datah, self.datal]
