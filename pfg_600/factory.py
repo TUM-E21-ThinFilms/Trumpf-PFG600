@@ -36,4 +36,4 @@ class PFG600Factory:
             logger = self.get_logger()
 
         protocol = PFG600Protocol(address=0, logger=logger)
-        return PFG600Driver(Serial(device, 9600, 8, 'N', 0, 0.2), protocol)
+        return PFG600Driver(Serial(device, 9600, 8, 'N', 1, 0.2), protocol)
