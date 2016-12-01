@@ -92,6 +92,6 @@ class Message(object):
 
 class SimpleMessage(Message):
     def __init__(self, functioncode, data=0):
-        super(SimpleMessage, self)._init_()
+        super(SimpleMessage, self).__init__()
         self.set_function(functioncode)
         self.set_data(data)
