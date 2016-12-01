@@ -79,14 +79,14 @@ class Message(object):
         if not isinstance(raw_data, list):
             raise TypeError("raw_data must be of type list")
 
-        if len(list) != 5:
+        if len(raw_data) != 5:
             raise ValueError("raw_data must be exactly 5 bytes long")
 
         msg = Message()
-        msg.set_address(list[0])
-        msg.set_full_function(list[1])
-        msg.set_data(list[2] << 8 | list[3])
-        msg.set_checksum(list[4])
+        msg.set_address(raw_data[0])
+        msg.set_full_function(raw_data[1])
+        msg.set_data(raw_data[2] << 8 | raw_data[3])
+        msg.set_checksum(raw_data[4])
 
         return msg
 
