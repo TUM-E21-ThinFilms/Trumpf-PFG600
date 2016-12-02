@@ -47,7 +47,7 @@ class PFG600Driver(object):
         self._actual_power = 0xD1
         self._actual_voltage = 0xD2
         self._actual_power_backward = 0xD4
-        self._power_limit = 0x57
+        self._limit = 0x57
         self._reset = 0x50
 
     def clear(self):
@@ -107,14 +107,14 @@ class PFG600Driver(object):
     def get_actual_power_backward(self):
         return self._query(SimpleMessage(self._actual_power_backward)).get_data()
 
-    def get_power_limit(self):
-        return self._query(SimpleMessage(self._power_limit)).get_data()
+    def get_limit(self):
+        return self._query(SimpleMessage(self._limit)).get_data()
 
-    def get_power_limit(self, limit):
+    def set_limit(self, limit):
         if not limit in [self.LIMIT_DELTAP, self.LIMIT_POWER, self.LIMIT_RFPEAK, self.LIMIT_VOLTAGE]:
             raise ValueError("unknown limit parameter given")
 
-        self._write(SimpleMessage(self._power_limit, limit))
+        self._write(SimpleMessage(self._limit, limit))
 
     def reset(self):
         self._write(SimpleMessage(self._resete))
