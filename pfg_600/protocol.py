@@ -17,9 +17,9 @@ from slave.protocol import Protocol
 from slave.transport import Timeout
 from message import Message
 
-
-class CommunicationError(Exception):
-    pass
+import e21_util
+from e21_util.lock import InterProcessTransportLock
+from e21_util.error import CommunicationError
 
 
 class PFG600Protocol(Protocol):
@@ -59,43 +59,45 @@ class PFG600Protocol(Protocol):
             raise CommunicationError('Received NOT a ACK')
 
     def query(self, transport, message):
-        if not isinstance(message, Message):
-            raise TypeError("message must be of instance Message")
+        with InterProcessTransportLock(transport):
+            if not isinstance(message, Message):
+                raise TypeError("message must be of instance Message")
 
-        message.set_waitingbit(1)
-        message.set_checksum(message.compute_checksum())
+            message.set_waitingbit(1)
+            message.set_checksum(message.compute_checksum())
 
-        raw_data = message.get_raw()
-        data = "".join(map(chr, raw_data))
+            raw_data = message.get_raw()
+            data = "".join(map(chr, raw_data))
 
-        self._send_raw(transport, data)
-        response = self._parse_response(self._read_response(transport))
+            self._send_raw(transport, data)
+            response = self._parse_response(self._read_response(transport))
 
-        self.check_checksum(response)
-        self._check_ack(response)
+            self.check_checksum(response)
+            self._check_ack(response)
 
-        return response
+            return response
 
     def write(self, transport, message):
+        with InterProcessTransportLock(transport):
+            if not isinstance(message, Message):
+                raise TypeError("message must be of instance Message")
 
-        if not isinstance(message, Message):
-            raise TypeError("message must be of instance Message")
+            message.set_waitingbit(0)
+            message.set_checksum(message.compute_checksum())
 
-        message.set_waitingbit(0)
-        message.set_checksum(message.compute_checksum())
+            raw_data = message.get_raw()
+            data = "".join(map(chr, raw_data))
 
-        raw_data = message.get_raw()
-        data = "".join(map(chr, raw_data))
+            self._send_raw(transport, data)
+            response = self._parse_response(self._read_response(transport))
 
-        self._send_raw(transport, data)
-        response = self._parse_response(self._read_response(transport))
-
-        self.check_checksum(response)
-        self._check_ack(response, True)
+            self.check_checksum(response)
+            self._check_ack(response, True)
 
     def clear(self, transport):
-        while True:
-            try:
-                transport.read_bytes(25)
-            except Timeout:
-                return True
+        with InterProcessTransportLock(transport):
+            while True:
+                try:
+                    transport.read_bytes(25)
+                except Timeout:
+                    return True

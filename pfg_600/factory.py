@@ -15,10 +15,9 @@
 
 import logging
 
-from slave.transport import Serial
+from e21_util.transport import Serial
 from protocol import PFG600Protocol
 from driver import PFG600Driver
-
 
 class PFG600Factory:
     def get_logger(self):
