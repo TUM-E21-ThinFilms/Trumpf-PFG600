@@ -90,7 +90,7 @@ class PFG600Driver(object):
         return self._query(SimpleMessage(self._operatingmode)).get_data()
 
     def set_operating_status(self, status):
-        if not status is [self.ON, self.OFF]:
+        if not status in [self.ON, self.OFF]:
             raise ValueError("unknown status parameter")
 
         self._write(SimpleMessage(self._operatingstatus, status))
