@@ -13,22 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-
 from e21_util.transport import Serial
+from e21_util.logging import get_sputter_logger
 from protocol import PFG600Protocol
 from driver import PFG600Driver
 
 class PFG600Factory:
     def get_logger(self):
-        logger = logging.getLogger('Trumpf PFG 600')
-        logger.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        fh = logging.FileHandler('trumpf_pfg600.log')
-        fh.setLevel(logging.DEBUG)
-        fh.setFormatter(formatter)
-        logger.addHandler(fh)
-        return logger
+        return get_sputter_logger('Trumpf PFG 600', 'trumpf_pfg600.log')
 
     def create_pfg600(self, device='/dev/ttyUSB15', logger=None):
         if logger is None:
