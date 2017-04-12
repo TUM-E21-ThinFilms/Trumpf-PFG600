@@ -117,4 +117,4 @@ class PFG600Driver(object):
         self._write(SimpleMessage(self._limit, limit))
 
     def reset(self):
-        self._write(SimpleMessage(self._resete))
+        self._write(SimpleMessage(self._reset))
