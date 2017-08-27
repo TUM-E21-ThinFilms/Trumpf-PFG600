@@ -48,6 +48,7 @@ class PFG600Driver(object):
         self._actual_voltage = 0xD2
         self._actual_power_backward = 0xD4
         self._limit = 0x57
+        self._error = 0xDA
         self._reset = 0x50
 
     def clear(self):
@@ -76,6 +77,9 @@ class PFG600Driver(object):
 
     def get_target_voltage(self):
         return self._query(SimpleMessage(self._target_voltage)).get_data()
+
+    def get_errors(self):
+        return self._query(SimpleMessage(self._error)).get_data()
 
     def get_regulate(self):
         return self._query(SimpleMessage(self._regulate)).get_data()
